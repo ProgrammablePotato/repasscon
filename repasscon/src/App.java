@@ -14,48 +14,47 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class App {
-public static void main(String[] args) {
-nevjegy();
-//Fejrész kiírása
-System.out.println("Jelszavak");
-//Verzió kiírása
-System.out.println("Verzió: 0.0.1");
+    public static void main(String[] args) {
+        header();
 
-//Az a objektummal kérhetünk be a konzolról
-Scanner a = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-System.out.print("Felhasználónév: ");
-// A b változó tárolja a jelszót
-String b = a.nextLine();
-System.out.print("Jelszó: ");
-String c = a.nextLine();
-System.out.print("Hely: ");
-String d = a.nextLine();
-a.close();
-int iSiker = 0;
-try {
-    /* 
-    A jelszó, a felhasználónév és a 
-    használati helye a passList 
-    objektumban van tárolva            
-    */
-    Store passList = new Store(b, c, d);
-    FileWriter f = new FileWriter("pass.txt");
-    PrintWriter pwr = new PrintWriter(f);
-    pwr.print(passList.a);
-    if(!passList.hollow()) { pwr.print(passList.retrieval()); }
-    pwr.print(passList.place);
-    pwr.close();
-    iSiker = 1;
-} catch (IOException e) {
-    System.err.println("Hiba! A fájlbaírás sikertelen. Keresse meg a fejlesztőt.");
-}
+        System.out.print("Felhasználónév: ");
+        String user = scanner.nextLine();
+        System.out.print("Jelszó: ");
+        String password = scanner.nextLine();
+        System.out.print("Hely: ");
+        String place = scanner.nextLine();
+        scanner.close();
 
-if(iSiker == 1) { System.out.println("Ok. A kiírás sikeres.");  }else {  System.out.println("Hiba! A kiírás sikertelen"); }
+        boolean success = false;
+        try {
+            StoreUser storeUser = new StoreUser(user, password, place);
+            FileWriter file = new FileWriter("pass.txt");
+            PrintWriter pwr = new PrintWriter(file);
+            pwr.println(storeUser.user);
 
-}
+            if(!storeUser.isHollow()) {
+                pwr.println(storeUser.retrievePassword());
+            }
+            pwr.println(storeUser.place);
+            pwr.close();
+            success = true;
+        } catch (IOException e) {
+            System.err.println("Hiba! A fájlbaírás sikertelen. Keresse meg a fejlesztőt.");
+        }
+        isSuccess(success);
+    }
 
-public static void nevjegy() {
-System.out.println("Nagy János");
-}
+    public static void header() {
+        System.out.println("Nagy János\nJelszavak\nVerzió: 0.0.1\n");
+    }
+
+    public static void isSuccess(boolean success) {
+        if(success) {
+            System.out.println("Ok. A kiírás sikeres.");
+        }else {
+            System.out.println("Hiba! A kiírás sikertelen");
+        }
+    }
 }
