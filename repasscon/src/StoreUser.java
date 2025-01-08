@@ -6,6 +6,8 @@
 * Date: 2024-12-15
 * Github: https://github.com/oktat/
 * Licenc: MIT
+
+* Reafactored by: Mihelik Tamás, II/1/N
 */
 
 public class StoreUser {
